@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 /*
@@ -5,15 +7,12 @@ import java.util.ArrayList;
  * https://algs4.cs.princeton.edu/44sp/EdgeWeightedDigraph.java.html
  */
 public class EdgeWeightedGraph {
-    public int numVert;
-    public int numEdge;
-    public ArrayList<ArrayList<DirectedEdge>> adjEdges;
-    public DirectedEdge[][] edgesAdj;
+    public static int numVert;
+    public static ArrayList<Stop> stops;
+    public static ArrayList<ArrayList<DirectedEdge>> adjEdges;
 
-    public EdgeWeightedGraph(Scanner input, int type) {
-        this.numVert = input.nextInt();
-        this.numEdge = input.nextInt();
-        if(type == 0) {
+    public EdgeWeightedGraph() {
+            numVert = stops.size();
             adjEdges = new ArrayList<>(numVert);
             for (int i = 0; i < numVert; i++) {
                 adjEdges.add(i, new ArrayList<DirectedEdge>());
@@ -38,18 +37,28 @@ public class EdgeWeightedGraph {
                     break;
                 }
             }
-        }
-        else { //if(type == 1)
-            edgesAdj = new DirectedEdge[numVert][numVert];
-            for (int i = 0; i < numEdge; i++) {
-                int vertexFrom = input.nextInt();
-                int vertexTo = input.nextInt();
-                double weight = input.nextDouble();
-                if (vertexFrom >= 0 && vertexTo >= 0 && weight >= 0) {
-                    edgesAdj[vertexFrom][vertexTo] = new DirectedEdge(vertexFrom, vertexTo, weight);
+    }
+
+    private static void initStops() {
+        try{
+            String filename = "stops.txt";
+            File file = new File(filename);
+            Scanner scanner = new Scanner(file);
+            scanner.useDelimiter(",");
+            scanner.nextLine();
+            while(scanner.hasNext()) {
+                if(scanner.hasNextInt()) {
+                    stops.add(new Stop(scanner.nextInt()));
+                    scanner.nextLine();
                 }
             }
+            scanner.close();
+        }   
+        catch(FileNotFoundException e){stops = null;}
+    }
 
-        }
+    public static void main(String[] args) {
+        stops = new ArrayList<>();
+        initStops();
     }
 }
