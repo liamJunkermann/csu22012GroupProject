@@ -12,31 +12,15 @@ public class EdgeWeightedGraph {
     public static ArrayList<ArrayList<DirectedEdge>> adjEdges;
 
     public EdgeWeightedGraph() {
-            // numVert = stops.size();
-            // adjEdges = new ArrayList<>(numVert*25);
-            // for (int i = 0; i < numVert; i++) {
-            //     adjEdges.add(stops.get(i).stopNumber, new ArrayList<DirectedEdge>());
-            // }
-            // for (int i = 0; i < numEdge; i++) {
-            //     int initVertex = input.nextInt();
-            //     int destVertex = input.nextInt();
-            //     double weight = input.nextDouble();
-            //     if(initVertex >= 0 && destVertex >= 0 && weight >= 0) {
-            //         adjEdges.get(initVertex).add(new DirectedEdge(initVertex, destVertex, weight));
-            //     }
-            //     else {
-            //         this.numVert = 0;
-            //         this.numEdge = 0;
-            //         break;
-            //     }
-            // }
-            // for (ArrayList<DirectedEdge> adjEdge : adjEdges) {
-            //     if (adjEdge.size() <= 0) {
-            //         this.numVert = 0;
-            //         this.numEdge = 0;
-            //         break;
-            //     }
-            // }
+        stops = new ArrayList<>();
+        initStops();
+        adjEdges = new ArrayList<>(stops.size());
+        for (int i = 0; i < stops.size(); i++) {
+            adjEdges.add(new ArrayList<>());
+        }
+        initStopEdges();
+        initTransferEdges();
+        System.out.println("success");
     }
 
     private static void initStops() {
@@ -76,7 +60,7 @@ public class EdgeWeightedGraph {
                 scanner.next();
                 if(lastRoute==currRoute){
                     currStop = scanner.nextInt();
-                    adjEdges.get(lastStop).add(new DirectedEdge(lastStop, currStop, 1));
+                    adjEdges.get(findStop(lastStop)).add(new DirectedEdge(lastStop, currStop, 1));
                     scanner.nextLine();
                 }
                 else {
@@ -94,38 +78,40 @@ public class EdgeWeightedGraph {
 
     private static void initTransferEdges() {
         try {
-            int initStop, destStop, weight;
+            int initStop, destStop; 
+            double weight;
             String filename = "transfers.txt";
             File file = new File(filename);
             Scanner scanner = new Scanner(file);
-            scanner.useDelimiter(",");
+            scanner.useDelimiter(",|\\n");
             scanner.nextLine();
             while(scanner.hasNext()) {
                 initStop = scanner.nextInt();
                 destStop = scanner.nextInt();
                 if(scanner.hasNextInt()) {
                     scanner.nextInt();
-                    int min = scanner.nextInt();
-                    weight = min/100;
+                    String min = scanner.next();
+                    min = min.substring(0,3);
+                    double minimum = Double.parseDouble(min);
+                    weight = minimum/100;
                 }
                 else {
                     weight = 2;
+                    scanner.nextLine();
                 }
-                adjEdges.get(initStop).add(new DirectedEdge(initStop, destStop, weight));
+                adjEdges.get(findStop(initStop)).add(new DirectedEdge(initStop, destStop, weight));
             }
             scanner.close();
         }
         catch(FileNotFoundException e){adjEdges = null;}
     }
 
-    public static void main(String[] args) {
-        stops = new ArrayList<>();
-        initStops();
-        adjEdges = new ArrayList<>(stops.size()*15);
-        for (int i = 0; i < stops.size()*15; i++) {
-            adjEdges.add(new ArrayList<>());
+    public static int findStop(int stopNum) {
+        for(int i = 0; i < stops.size(); i++) {
+            if(stops.get(i).stopNumber == stopNum) {
+                return i;
+            }
         }
-        initStopEdges();
-        initTransferEdges();
+        return -1;
     }
 }
