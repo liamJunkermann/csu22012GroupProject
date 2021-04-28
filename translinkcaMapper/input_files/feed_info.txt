@@ -1,2 +1,0 @@
-feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
-TransLink,https://www.translink.ca,en,20210412,20210620,21APR_20210422

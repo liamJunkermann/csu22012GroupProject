@@ -1,2 +1,0 @@
-agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone
-TL,TransLink,https://www.translink.ca,America/Vancouver,en,604-953-3333
