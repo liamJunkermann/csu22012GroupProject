@@ -15,12 +15,12 @@ public class DijkstraSPT {
             distTo[i] = Double.POSITIVE_INFINITY;
             visited[i] = false;
         }
-        distTo[sourceVertex] = 0;
+        distTo[EdgeWeightedGraph.findStop(sourceVertex)] = 0;
         for(int i = 0; i < graph.numVert - 1; i++) {
             int vertex = minimumDistance(distTo, visited);
             if(vertex < 0) continue;
             visited[vertex] = true;
-            for(DirectedEdge edge : graph.adjEdges.get(vertex))
+            for(DirectedEdge edge : EdgeWeightedGraph.adjEdges.get(vertex))
                 relax(edge);
         }
 

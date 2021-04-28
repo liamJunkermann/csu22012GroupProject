@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class EdgeWeightedGraph {
     public int numVert;
-    public static ArrayList<Stop> stops;
-    public static ArrayList<ArrayList<DirectedEdge>> adjEdges;
+    public  static ArrayList<Stop> stops;
+    public  static ArrayList<ArrayList<DirectedEdge>> adjEdges;
 
     public EdgeWeightedGraph() {
         stops = new ArrayList<>();
