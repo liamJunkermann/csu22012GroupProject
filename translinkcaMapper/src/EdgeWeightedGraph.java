@@ -14,6 +14,7 @@ public class EdgeWeightedGraph {
     public EdgeWeightedGraph() {
         stops = new ArrayList<>();
         initStops();
+        this.numVert = stops.size();
         adjEdges = new ArrayList<>(stops.size());
         for (int i = 0; i < stops.size(); i++) {
             adjEdges.add(new ArrayList<>());
@@ -32,7 +33,10 @@ public class EdgeWeightedGraph {
             scanner.nextLine();
             while(scanner.hasNext()) {
                 if(scanner.hasNextInt()) {
-                    stops.add(new Stop(scanner.nextInt()));
+                    int stopNum = scanner.nextInt();
+                    scanner.next();
+                    String stopName = scanner.next();
+                    stops.add(new Stop(stopNum, stopName));
                     scanner.nextLine();
                 }
             }

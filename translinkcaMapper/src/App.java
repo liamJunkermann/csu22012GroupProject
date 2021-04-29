@@ -1,48 +1,62 @@
 import java.util.Scanner;
-
+import java.util.ArrayList;
 public class App {
 
     //User interface menu - allows user to chose from avaible functions
-    public static boolean menu(){
+    public static boolean menu(EdgeWeightedGraph graph){
         System.out.print("Choose from the options below or type 'exit' to quit the program:\n"
         + "To find the shortest path between two bus stops type: 1\n"
         + "To find information on a specific stop type: 2\n"
-        + "To find all trips wiht a given arrival time type: 3\n"
+        + "To find all trips with a given arrival time type: 3\n"
         );
         Scanner input = new Scanner(System.in);
         if(input.next().equals("exit")) {
             input.close();
             return false;
         }
-        else if(input.hasNextInt() && input.nextInt() > 0 && input.nextInt() < 4) {
-            switch(input.nextInt()) {
-                case 1:
-                    System.out.println("Enter the first(starting) stop:");
-                    String stop1 = input.nextLine();
-                    System.out.println("Enter the second(destination) stop:");
-                    String stop2 = input.nextLine();
-                    findShortestPath(stop1, stop2);     //input validation done within function
-                    break;
-                case 2:
-                    System.out.println("Enter the stop name, or just the first few characters:");
-                    busStopSearch(input.nextLine());    //input validation done within function
-                    break;
-                case 3:
-                    System.out.println("Enter arrival time in format - hh:mm:ss");
-                    String inputTime = input.nextLine();
-                    if(isValidTime(inputTime)) {    //check first if format is correct
-                        tripArrivalTime(inputTime);
-                    } else {
+        else if(input.hasNextInt()) {
+            int value = input.nextInt();
+            if(value > 0 && value < 4) {
+                switch(value) {
+                    case 1:
+                        int stop1, stop2;
+                        System.out.println("Enter the first(starting) stop:");
+                        if(input.hasNextInt()) {
+                            stop1 = input.nextInt();
+                        }
+                        else{
+                            System.out.println("Please enter a vaild input");
+                            break;
+                        }
+                        System.out.println("Enter the second(destination) stop:");
+                        if(input.hasNextInt()) {
+                            stop2 = input.nextInt();
+                        }
+                        else{
+                            System.out.println("Please enter a vaild input");
+                            break;
+                        }
+                        findShortestPath(stop1, stop2, graph);     //input validation done within function
+                        break;
+                    case 2:
+                        System.out.println("Enter the stop name, or just the first few characters:");
+                        busStopSearch(input.nextLine());    //input validation done within function
+                        break;
+                    case 3:
+                        System.out.println("Enter arrival time in format - hh:mm:ss");
+                        String inputTime = input.nextLine();
+                        if(isValidTime(inputTime)) {    //check first if format is correct
+                            tripArrivalTime(inputTime);
+                        } else {
+                            System.out.println("Please enter a vaild input");
+                        }
+                        break;
+                    default:
                         System.out.println("Please enter a vaild input");
-                    }
-                    break;
-                default:
-                    System.out.println("Please enter a vaild input");
-                    input.close();
-                    return false;
+                        input.close();
+                        return false;
+                }
             }
-
-
         }
         else {
             System.out.println("Please enter a vaild input");
@@ -64,8 +78,13 @@ public class App {
 
     //Finding shortest paths between 2 bus stops (as input by the user), returning the list of stops
     //en route as well as the associated “cost”.
-    private static String findShortestPath(String stop1, String stop2) {
-        return "";
+    private static void findShortestPath(int stop1, int stop2, EdgeWeightedGraph graph) {
+        DijkstraSPT shortestPath = new DijkstraSPT(graph, stop1, stop2);
+        ArrayList<Integer> route = shortestPath.shortestRoute;
+        for(int i = 0; i < route.size(); i++) {
+            Stop s = graph.stops.get(route.get(i));
+            System.out.println(s.stopNumber + " - " + s.stopName);
+        }
     } 
     //Searching for a bus stop by full name or by the first few characters in the name, using a
     //ternary search tree (TST), returning the full stop information for each stop matching the
@@ -80,9 +99,10 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
+        EdgeWeightedGraph graph = new EdgeWeightedGraph();
         boolean run = false;
         do {
-            run = menu();
+            run = menu(graph);
         } while(run);
     }
 }

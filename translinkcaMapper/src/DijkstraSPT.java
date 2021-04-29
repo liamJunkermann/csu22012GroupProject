@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 /*
  * Adapted from by DijkstraSP by Sedgewick and Wayne
  * https://algs4.cs.princeton.edu/44sp/DijkstraSP.java.html
@@ -6,11 +7,15 @@ public class DijkstraSPT {
     public double[] distTo;
     public DirectedEdge[] edgeTo;
     public boolean[] visited;
+    public int[] parent;
+    public ArrayList<Integer> shortestRoute;
 
-    public DijkstraSPT(EdgeWeightedGraph graph, int sourceVertex) {
+    public DijkstraSPT(EdgeWeightedGraph graph, int sourceVertex, int finalVertex) {
         distTo = new double[graph.numVert];
         edgeTo = new DirectedEdge[graph.numVert];
         visited = new boolean[graph.numVert];
+        parent = new int[graph.numVert];
+        parent[EdgeWeightedGraph.findStop(sourceVertex)] = -1;
         for(int i = 0; i < distTo.length; i++) {
             distTo[i] = Double.POSITIVE_INFINITY;
             visited[i] = false;
@@ -23,8 +28,8 @@ public class DijkstraSPT {
             for(DirectedEdge edge : EdgeWeightedGraph.adjEdges.get(vertex))
                 relax(edge);
         }
-
-
+        shortestRoute = new ArrayList<Integer>();
+        shortestRoute = findShortestPath(parent, finalVertex);
     }
     //Adapted from minDistance algorithm from www.geeksforgeeks.org
     public int minimumDistance(double[] distTo, boolean[] visited) {
@@ -41,11 +46,22 @@ public class DijkstraSPT {
 
     //Adapted from relax() method by Sedgewick and Wayne
     public void relax(DirectedEdge edge) {
-        int initVert = edge.initVertex;
-        int destVert = edge.destVertex;
+        int initVert = EdgeWeightedGraph.findStop(edge.initVertex);
+        int destVert = EdgeWeightedGraph.findStop(edge.destVertex);
         if(distTo[destVert] > (distTo[initVert] + edge.weight)) {
             distTo[destVert] = distTo[initVert] + edge.weight;
             edgeTo[destVert] = edge;
+            parent[destVert] = initVert;
         }
+    }
+
+    public ArrayList<Integer> findShortestPath(int[] parent, int lastStop) {
+        if(parent[EdgeWeightedGraph.findStop(lastStop)] == -1) {
+            shortestRoute.add(EdgeWeightedGraph.findStop(lastStop));
+            return shortestRoute;
+        }
+        findShortestPath(parent, parent[EdgeWeightedGraph.findStop(lastStop)]);
+        shortestRoute.add(EdgeWeightedGraph.findStop(lastStop));
+        return shortestRoute;
     }
 }
