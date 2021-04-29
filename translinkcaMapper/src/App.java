@@ -18,20 +18,26 @@ public class App {
             switch(input.nextInt()) {
                 case 1:
                     System.out.println("Enter the first(starting) stop:");
-                    String stop1 = input.next();
+                    String stop1 = input.nextLine();
                     System.out.println("Enter the second(destination) stop:");
-                    String stop2 = input.next();
-                    findShortestPath(stop1, stop2);
+                    String stop2 = input.nextLine();
+                    findShortestPath(stop1, stop2);     //input validation done within function
                     break;
                 case 2:
                     System.out.println("Enter the stop name, or just the first few characters:");
-                    busStopSearch(input.next());
+                    busStopSearch(input.nextLine());    //input validation done within function
                     break;
                 case 3:
                     System.out.println("Enter arrival time in format - hh:mm:ss");
-                    tripArrivalTime(input.next());
+                    String inputTime = input.nextLine();
+                    if(isValidTime(inputTime)) {    //check first if format is correct
+                        tripArrivalTime(inputTime);
+                    } else {
+                        System.out.println("Please enter a vaild input");
+                    }
                     break;
                 default:
+                    System.out.println("Please enter a vaild input");
                     input.close();
                     return false;
             }
@@ -43,6 +49,17 @@ public class App {
         }
         input.close();
         return true;
+    }
+
+    //adapted from geeksforgeeks.org
+    private static boolean isValidTime(String time) {
+        String regex = "([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]";
+        Pattern p = Pattern.compile(regex);
+        if (time == null) {
+            return false;
+        }
+        Matcher m = p.matcher(time);
+        return m.matches();
     }
 
     //Finding shortest paths between 2 bus stops (as input by the user), returning the list of stops
@@ -63,7 +80,6 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
         boolean run = false;
         do {
             run = menu();

@@ -7,3 +7,4 @@
 `Added cli menu and major function placeholder` - Sean Gaffney 19304695 \
 `Completed functionality for storing bus routes in graph structure` - Dan Whelan 19335045 \
 `Added functionality to DijkstraSPT class for finding shortest paths from source node` - Dan Whelan 19335045 \
+`Added furhter user input validation` - Sean Gaffney 19304695 \
