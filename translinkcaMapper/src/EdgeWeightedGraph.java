@@ -21,12 +21,11 @@ public class EdgeWeightedGraph {
         }
         initStopEdges();
         initTransferEdges();
-        System.out.println("success");
     }
 
     private static void initStops() {
         try{
-            String filename = "stops.txt";
+            String filename = "translinkcaMapper/src/stops.txt";
             File file = new File(filename);
             Scanner scanner = new Scanner(file);
             scanner.useDelimiter(",");
@@ -48,7 +47,7 @@ public class EdgeWeightedGraph {
     private static void initStopEdges() {
         try {
             int lastRoute, currRoute, lastStop, currStop; 
-            String filename = "stop_times.txt";
+            String filename = "translinkcaMapper/src/stop_times.txt";
             File file = new File(filename);
             Scanner scanner = new Scanner(file);
             scanner.useDelimiter(",");
@@ -65,15 +64,14 @@ public class EdgeWeightedGraph {
                 if(lastRoute==currRoute){
                     currStop = scanner.nextInt();
                     adjEdges.get(findStop(lastStop)).add(new DirectedEdge(lastStop, currStop, 1));
-                    scanner.nextLine();
+                    lastStop = currStop;
+                    lastRoute = currRoute;
                 }
                 else {
-                    lastRoute = scanner.nextInt();
-                    scanner.next();
-                    scanner.next();
+                    lastRoute = currRoute;
                     lastStop = scanner.nextInt();
-                    scanner.nextLine();
                 }
+                scanner.nextLine();
             }
             scanner.close();
         }
@@ -84,7 +82,7 @@ public class EdgeWeightedGraph {
         try {
             int initStop, destStop; 
             double weight;
-            String filename = "transfers.txt";
+            String filename = "translinkcaMapper/src/transfers.txt";
             File file = new File(filename);
             Scanner scanner = new Scanner(file);
             scanner.useDelimiter(",|\\n");
