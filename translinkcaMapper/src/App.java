@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.regex.*;
+
 public class App {
 
     //User interface menu - allows user to chose from avaible functions
@@ -20,7 +22,7 @@ public class App {
                 switch(value) {
                     case 1:
                         int stop1, stop2;
-                        System.out.println("Enter the first(starting) stop:");
+                        System.out.println("Enter the first(starting) stop number:");
                         if(input.hasNextInt()) {
                             stop1 = input.nextInt();
                         }
@@ -28,7 +30,7 @@ public class App {
                             System.out.println("Please enter a vaild input");
                             break;
                         }
-                        System.out.println("Enter the second(destination) stop:");
+                        System.out.println("Enter the second(destination) stop number:");
                         if(input.hasNextInt()) {
                             stop2 = input.nextInt();
                         }
@@ -36,7 +38,7 @@ public class App {
                             System.out.println("Please enter a vaild input");
                             break;
                         }
-                        findShortestPath(stop1, stop2, graph);     //input validation done within function
+                        findShortestPath(stop1, stop2, graph);     
                         break;
                     case 2:
                         System.out.println("Enter the stop name, or just the first few characters:");
@@ -61,7 +63,6 @@ public class App {
         else {
             System.out.println("Please enter a vaild input");
         }
-        input.close();
         return true;
     }
 
@@ -80,10 +81,16 @@ public class App {
     //en route as well as the associated “cost”.
     private static void findShortestPath(int stop1, int stop2, EdgeWeightedGraph graph) {
         DijkstraSPT shortestPath = new DijkstraSPT(graph, stop1, stop2);
-        ArrayList<Integer> route = shortestPath.shortestRoute;
-        for(int i = 0; i < route.size(); i++) {
-            Stop s = graph.stops.get(route.get(i));
-            System.out.println(s.stopNumber + " - " + s.stopName);
+        if(shortestPath.fail == false) {
+            ArrayList<Stop> route = shortestPath.shortestRoute;
+            System.out.println("The Route from stop " + stop1 + " to stop " + stop2 + " is:");
+            for(int i = 0; i < route.size(); i++) {
+                Stop s = route.get(i);
+                System.out.println(s.stopNumber + " - " + s.stopName);
+            }
+        }
+        else {
+            System.out.println("Invalid Start or Destination Stop number entered");
         }
     } 
     //Searching for a bus stop by full name or by the first few characters in the name, using a

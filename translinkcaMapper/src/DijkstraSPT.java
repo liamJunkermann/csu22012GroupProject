@@ -5,31 +5,36 @@ import java.util.ArrayList;
  */
 public class DijkstraSPT {
     public double[] distTo;
-    public DirectedEdge[] edgeTo;
     public boolean[] visited;
     public int[] parent;
-    public ArrayList<Integer> shortestRoute;
+    public ArrayList<Stop> shortestRoute;
+    public boolean fail = false;
 
     public DijkstraSPT(EdgeWeightedGraph graph, int sourceVertex, int finalVertex) {
-        distTo = new double[graph.numVert];
-        edgeTo = new DirectedEdge[graph.numVert];
-        visited = new boolean[graph.numVert];
-        parent = new int[graph.numVert];
-        parent[EdgeWeightedGraph.findStop(sourceVertex)] = -1;
-        for(int i = 0; i < distTo.length; i++) {
-            distTo[i] = Double.POSITIVE_INFINITY;
-            visited[i] = false;
+        if(EdgeWeightedGraph.findStop(sourceVertex) != -1 && EdgeWeightedGraph.findStop(finalVertex) != -1) {
+            distTo = new double[graph.numVert];
+            visited = new boolean[graph.numVert];
+            parent = new int[graph.numVert];
+            parent[EdgeWeightedGraph.findStop(sourceVertex)] = -1;
+            for(int i = 0; i < distTo.length; i++) {
+                distTo[i] = Double.POSITIVE_INFINITY;
+                visited[i] = false;
+            }
+            distTo[EdgeWeightedGraph.findStop(sourceVertex)] = 0;
+            for(int i = 0; i < graph.numVert - 1; i++) {
+                int vertex = minimumDistance(distTo, visited);
+                if(vertex < 0) continue;
+                visited[vertex] = true;
+                for(DirectedEdge edge : EdgeWeightedGraph.adjEdges.get(vertex))
+                    relax(edge);
+            }
+            shortestRoute = new ArrayList<Stop>();
+            int temp = EdgeWeightedGraph.findStop(finalVertex);
+            shortestRoute = findShortestPath(parent, temp);
         }
-        distTo[EdgeWeightedGraph.findStop(sourceVertex)] = 0;
-        for(int i = 0; i < graph.numVert - 1; i++) {
-            int vertex = minimumDistance(distTo, visited);
-            if(vertex < 0) continue;
-            visited[vertex] = true;
-            for(DirectedEdge edge : EdgeWeightedGraph.adjEdges.get(vertex))
-                relax(edge);
+        else {
+            fail = true;
         }
-        shortestRoute = new ArrayList<Integer>();
-        shortestRoute = findShortestPath(parent, finalVertex);
     }
     //Adapted from minDistance algorithm from www.geeksforgeeks.org
     public int minimumDistance(double[] distTo, boolean[] visited) {
@@ -50,18 +55,17 @@ public class DijkstraSPT {
         int destVert = EdgeWeightedGraph.findStop(edge.destVertex);
         if(distTo[destVert] > (distTo[initVert] + edge.weight)) {
             distTo[destVert] = distTo[initVert] + edge.weight;
-            edgeTo[destVert] = edge;
             parent[destVert] = initVert;
         }
     }
 
-    public ArrayList<Integer> findShortestPath(int[] parent, int lastStop) {
-        if(parent[EdgeWeightedGraph.findStop(lastStop)] == -1) {
-            shortestRoute.add(EdgeWeightedGraph.findStop(lastStop));
+    public ArrayList<Stop> findShortestPath(int[] parent, int lastStop) {
+        if(parent[lastStop] == -1) {
+            shortestRoute.add(EdgeWeightedGraph.stops.get(lastStop));
             return shortestRoute;
         }
-        findShortestPath(parent, parent[EdgeWeightedGraph.findStop(lastStop)]);
-        shortestRoute.add(EdgeWeightedGraph.findStop(lastStop));
+        findShortestPath(parent, parent[lastStop]);
+        shortestRoute.add(EdgeWeightedGraph.stops.get(lastStop));
         return shortestRoute;
     }
 }
