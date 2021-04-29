@@ -63,7 +63,6 @@ public class App {
         else {
             System.out.println("Please enter a vaild input");
         }
-        input.close();
         return true;
     }
 
@@ -84,7 +83,7 @@ public class App {
         DijkstraSPT shortestPath = new DijkstraSPT(graph, stop1, stop2);
         if(shortestPath.fail == false) {
             ArrayList<Stop> route = shortestPath.shortestRoute;
-            System.out.println("The Route from " + stop1 + " to " + stop2 + " is:");
+            System.out.println("The Route from stop " + stop1 + " to stop " + stop2 + " is:");
             for(int i = 0; i < route.size(); i++) {
                 Stop s = route.get(i);
                 System.out.println(s.stopNumber + " - " + s.stopName);
