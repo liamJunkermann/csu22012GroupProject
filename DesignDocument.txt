@@ -1,0 +1,8 @@
+﻿Algotithms and Data Structures group project design document
+Feature 1: Bus route and associated cost.
+The path finding algorithm that we chose to use for this feature was Sedgewick and Wayne’s DijkstraSP algorithm. We decided to go with Dijkstra because A* would be less efficient for our task of finding the shortest path to a given point. We also came to the conclusion that A* would be more difficult to implement given the requirements of this program.
+
+
+We used the TST because we are using full and partial word keys as our data structure and as such a TST gives us the most efficient algorithm for our data structure  
+
+We decided to use A command line interface as it would allow for the functionality that we required without over complicating anything by implementing an ultimately pointless Visual interface.
