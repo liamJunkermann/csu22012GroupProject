@@ -1,22 +1,60 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  * Adapted from TST by Sedgwick and Wayne
  * https://algs4.cs.princeton.edu/52trie/TST.java.html
  */
 
-public class TST<Value> {
+public class TST {
     private int n;              // size
-    private Node<Value> root;   // root of TST
+    private Node root;
 
-    private static class Node<Value> {
-        private char c;                        // character
-        private Node<Value> left, mid, right;  // left, middle, and right subtries
-        private Value val;                     // value associated with string
+    private static class Node {
+        private char c;                     // character
+        private Node left, mid, right;      // left, middle, and right subtries
+        private Stop val;                   // value associated with string
     }
 
     public TST() {
     }
 
-    public TST(String filename) {}
+    public TST(String filename) {
+        fileToTST(filename);
+    }
+
+    private void fileToTST(String filename) {
+        int lineCount = 0;
+        try {
+            File file = new File(filename);
+            Scanner scanner = new Scanner(file);
+            scanner.useDelimiter(",");
+            scanner.nextLine();
+            lineCount++;
+            while(scanner.hasNext()) {
+                if(scanner.hasNextInt()) {
+                    int stopNum = Integer.parseInt(scanner.next());
+                    scanner.next(); // handling stop codes
+                    String stopName = scanner.next();
+                    String stopDesc = scanner.next();
+                    Stop currStop = new Stop(stopNum, stopName, stopDesc);
+                    put(currStop.stopName, currStop);
+                    scanner.nextLine();
+                    lineCount++;
+                }
+            }
+            System.out.println(lineCount);
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+            root=null;
+            n = 0;
+        } catch (NumberFormatException e) {
+            System.out.println(e + " on line " + lineCount);
+        }
+
+    }
 
     public int size() {
         return n;
@@ -29,17 +67,17 @@ public class TST<Value> {
         return get(key) != null;
     }
 
-    public Value get(String key) {
+    public Stop get(String key) {
         if (key == null) {
             throw new IllegalArgumentException("calls get() with null argument");
         }
         if (key.length() == 0) throw new IllegalArgumentException("key must have length >= 1");
-        Node<Value> x = get(root, key, 0);
+        Node x = get(root, key, 0);
         if (x == null) return null;
         return x.val;
     }
 
-    public void put(String key, Value val) {
+    public void put(String key, Stop val) {
         if (key == null) {
             throw new IllegalArgumentException("calls put() with null key");
         }
@@ -48,10 +86,10 @@ public class TST<Value> {
         root = put(root, key, val, 0);
     }
 
-    private Node<Value> put(Node<Value> x, String key, Value val, int d) {
+    private Node put(Node x, String key, Stop val, int d) {
         char c = key.charAt(d);
         if (x == null) {
-            x = new Node<Value>();
+            x = new Node();
             x.c = c;
         }
         if      (c < x.c)               x.left  = put(x.left,  key, val, d);
@@ -62,7 +100,7 @@ public class TST<Value> {
     }
 
     // return subtrie corresponding to given key
-    private Node<Value> get(Node<Value> x, String key, int d) {
+    private Node get(Node x, String key, int d) {
         if (x == null) return null;
         if (key.length() == 0) throw new IllegalArgumentException("key must have length >= 1");
         char c = key.charAt(d);
@@ -83,7 +121,7 @@ public class TST<Value> {
             throw new IllegalArgumentException("calls keysWithPrefix() with null argument");
         }
         Queue<String> queue = new Queue<String>();
-        Node<Value> x = get(root, prefix, 0);
+        Node x = get(root, prefix, 0);
         if (x == null) return queue;
         if (x.val != null) queue.enqueue(prefix);
         collect(x.mid, new StringBuilder(prefix), queue);
@@ -91,7 +129,7 @@ public class TST<Value> {
     }
 
     // all keys in subtrie rooted at x with given prefix
-    private void collect(Node<Value> x, StringBuilder prefix, Queue<String> queue) {
+    private void collect(Node x, StringBuilder prefix, Queue<String> queue) {
         if (x == null) return;
         collect(x.left,  prefix, queue);
         if (x.val != null) queue.enqueue(prefix.toString() + x.c);
@@ -100,6 +138,17 @@ public class TST<Value> {
         collect(x.right, prefix, queue);
     }
 
-    public static void main(String[] args) {
-    }
+    /* public static void main(String[] args) {
+        TST searchTree = new TST("translinkcaMapper/src/stopsDescs.txt");
+        // System.out.println("|KEY|\t|STOP NUM|\t|STOP NAME|\t|STOP DESCRIPTION|");
+        // System.out.println("--------------------------------------------------------------------------");
+        // for(String key : searchTree.keys()) {
+        //     System.out.println(key + "|\t" + searchTree.get(key).printStop());
+        // }
+        System.out.println(searchTree.n);
+        for(String key : searchTree.keysWithPrefix("HWY")){
+            System.out.println(key);
+        }
+        System.out.println(searchTree.get(searchTree.keysWithPrefix("HWY").iterator().next()).printStop());
+    } */
 }
