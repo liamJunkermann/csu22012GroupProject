@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.regex.*;
+
 public class App {
 
     //User interface menu - allows user to chose from avaible functions
