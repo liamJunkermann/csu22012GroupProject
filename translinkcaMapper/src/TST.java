@@ -44,7 +44,7 @@ public class TST {
                     lineCount++;
                 }
             }
-            System.out.println(lineCount);
+            // System.out.println(lineCount);
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println(e);

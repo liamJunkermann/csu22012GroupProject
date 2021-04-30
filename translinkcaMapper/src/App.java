@@ -107,8 +107,8 @@ public class App {
         }
         else if(stop1 == stop2) {
             System.out.println("The Route from stop " + stop1 + " to stop " + stop2 + " is:");
-            System.out.println(EdgeWeightedGraph.stops.get(EdgeWeightedGraph.findStop(stop1)).stopNumber + " - " + 
-                               EdgeWeightedGraph.stops.get(EdgeWeightedGraph.findStop(stop1)).stopName);
+            System.out.println(graph.stops.get(graph.findStop(stop1)).stopNumber + " - " + 
+                               graph.stops.get(graph.findStop(stop1)).stopName);
         }
         else {
             System.out.println("Invalid Start or Destination Stop number entered");
@@ -158,8 +158,12 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
+        long startTime = System.currentTimeMillis();
+        System.out.println("Loading");
         EdgeWeightedGraph graph = new EdgeWeightedGraph();
         TST newTree = new TST("translinkcaMapper/src/stopsDescs.txt");
+        long endTime = System.currentTimeMillis();
+        System.out.println("Loaded in "+ (startTime-endTime)+"ms");
         boolean run = false;
         do {
             run = menu(graph, newTree);

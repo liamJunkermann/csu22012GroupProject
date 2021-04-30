@@ -8,9 +8,9 @@ import java.util.ArrayList;
  */
 public class EdgeWeightedGraph {
     public int numVert;
-    public  static ArrayList<Stop> stops;
-    public  static ArrayList<ArrayList<DirectedEdge>> adjEdges;
-    public static ArrayList<Trip> trips;
+    public ArrayList<Stop> stops;
+    public ArrayList<ArrayList<DirectedEdge>> adjEdges;
+    public ArrayList<Trip> trips;
 
     public EdgeWeightedGraph() {
         stops = new ArrayList<>();
@@ -25,7 +25,7 @@ public class EdgeWeightedGraph {
         initTripTimes();
     }
 
-    private static void initStops() {
+    private void initStops() {
         try{
             String filename = "translinkcaMapper/src/stops.txt";
             File file = new File(filename);
@@ -46,7 +46,7 @@ public class EdgeWeightedGraph {
         catch(FileNotFoundException e){stops = null;}
     }
 
-    private static void initStopEdges() {
+    private void initStopEdges() {
         try {
             int lastRoute, currRoute, lastStop, currStop; 
             String filename = "translinkcaMapper/src/stop_times.txt";
@@ -80,7 +80,7 @@ public class EdgeWeightedGraph {
         catch(FileNotFoundException e){adjEdges = null;}
     }
 
-    private static void initTripTimes() {
+    private void initTripTimes() {
         try {
             trips = new ArrayList<>();
             String route, time;
@@ -100,11 +100,12 @@ public class EdgeWeightedGraph {
                 trips.add(new Trip(time, stop, route));
                 scanner.nextLine();
             }
+            scanner.close();
         }
         catch (FileNotFoundException e) {}
     }
 
-    private static void initTransferEdges() {
+    private void initTransferEdges() {
         try {
             int initStop, destStop; 
             double weight;
@@ -134,7 +135,7 @@ public class EdgeWeightedGraph {
         catch(FileNotFoundException e){adjEdges = null;}
     }
 
-    public static int findStop(int stopNum) {
+    public int findStop(int stopNum) {
         for(int i = 0; i < stops.size(); i++) {
             if(stops.get(i).stopNumber == stopNum) {
                 return i;
