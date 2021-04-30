@@ -7,7 +7,7 @@ public class App {
     public static final Scanner input = new Scanner(System.in);
 
     //User interface menu - allows user to chose from avaible functions
-    public static boolean menu(EdgeWeightedGraph graph){
+    public static boolean menu(EdgeWeightedGraph graph, TST tree){
         System.out.print("\nChoose from the options below or type 'exit' to quit the program:\n"
         + "To find the shortest path between two bus stops type: 1\n"
         + "To find information on a specific stop type:          2\n"
@@ -52,7 +52,7 @@ public class App {
                     case 2:
                         System.out.print("Enter the stop name, or just the first few characters: \n- ");
                         String searchTest = input.next();
-                        busStopSearch(searchTest.toUpperCase());    //input validation done within function
+                        busStopSearch(searchTest.toUpperCase(), tree);    //input validation done within function
                         break;
                     case 3:
                         System.out.print("Enter arrival time in format - hh:mm:ss \n- ");
@@ -118,8 +118,7 @@ public class App {
     //Searching for a bus stop by full name or by the first few characters in the name, using a
     //ternary search tree (TST), returning the full stop information for each stop matching the
     //search criteria (which can be zero, one or more stops)
-    private static void busStopSearch(String stopName) {
-        TST searchTree = new TST("translinkcaMapper/src/stopsDescs.txt");
+    private static void busStopSearch(String stopName, TST searchTree) {
         Iterable<String> validStops = searchTree.keysWithPrefix(stopName);
         if(validStops != null) {
             System.out.println("|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
@@ -140,9 +139,10 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         EdgeWeightedGraph graph = new EdgeWeightedGraph();
+        TST newTree = new TST("translinkcaMapper/src/stopsDescs.txt");
         boolean run = false;
         do {
-            run = menu(graph);
+            run = menu(graph, newTree);
         } while(run);
         System.out.println("\nSucessfully quit");
     }
