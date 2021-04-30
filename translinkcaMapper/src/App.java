@@ -9,9 +9,9 @@ public class App {
     //User interface menu - allows user to chose from avaible functions
     public static boolean menu(EdgeWeightedGraph graph, TST tree){
         System.out.print("\nChoose from the options below or type 'exit' to quit the program:\n"
-        + "To find the shortest path between two bus stops type: 1\n"
-        + "To find information on a specific stop type:          2\n"
-        + "To find all trips with a given arrival time type:     3\n"
+        + "1 - To find the shortest path between two bus stops type\n"
+        + "2 - To find information on a specific stop type\n"
+        + "3 - To find all trips with a given arrival time type\n"
         +"- "
         );
         var in = input.next();
@@ -36,7 +36,7 @@ public class App {
                             stop1 = input.nextInt();
                         }
                         else{
-                            System.out.println("Please enter a vaild input");
+                            System.out.println("That is not a valid stop");
                             break;
                         }
                         System.out.print("Enter the second(destination) stop number: \n-");
@@ -44,7 +44,7 @@ public class App {
                             stop2 = input.nextInt();
                         }
                         else{
-                            System.out.println("Please enter a vaild input");
+                            System.out.println("That is not a valid stop");
                             break;
                         }
                         findShortestPath(stop1, stop2, graph);     
@@ -60,19 +60,19 @@ public class App {
                         if(isValidTime(inputTime)) {    //check first if format is correct
                             tripArrivalTime(inputTime);
                         } else {
-                            System.out.println("Please enter a vaild input");
+                            System.out.println("You must enter the time in the format  - hh:mm:ss");
                         }
                         break;
                     default:
-                        System.out.println("Please enter a vaild input");
+                        System.out.println("The menu options are between 1 - 3");
                         return false;
                 }
             } else {
-                System.out.println("Please enter a vaild input");
+                System.out.println("The menu options are between 1 - 3");
             }
         }
         else {
-            System.out.println("Please enter a vaild input");
+            System.out.println("Please enter a value between 1 and 3 - or 'exit");
         }
         System.out.print("\nPress Enter to continue");
         try {
@@ -124,7 +124,7 @@ public class App {
             System.out.println("|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
              System.out.println("--------------------------------------------------------------------------");
             for(String key : validStops){
-                System.out.println("" + searchTree.get(key).printStopSingleLine());
+                searchTree.get(key).printStopSingleLine();
             }
         } else {
             System.out.println("No matching stops were found");
