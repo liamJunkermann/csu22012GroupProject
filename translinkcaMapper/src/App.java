@@ -1,25 +1,37 @@
 import java.util.Scanner;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.*;
 
 public class App {
+    public static final Scanner input = new Scanner(System.in);
 
     //User interface menu - allows user to chose from avaible functions
     public static boolean menu(EdgeWeightedGraph graph){
-        System.out.print("Choose from the options below or type 'exit' to quit the program:\n"
+        System.out.print("\nChoose from the options below or type 'exit' to quit the program:\n"
         + "To find the shortest path between two bus stops type: 1\n"
-        + "To find information on a specific stop type: 2\n"
-        + "To find all trips with a given arrival time type: 3\n"
+        + "To find information on a specific stop type:          2\n"
+        + "To find all trips with a given arrival time type:     3\n"
+        +"- "
         );
-        Scanner input = new Scanner(System.in);
-        if(input.next().equals("exit")) {
-            input.close();
+        //Scanner input = new Scanner(System.in);
+        var in = input.next();
+        boolean isInt = false;
+        int intValue = 0;
+        try {
+            intValue = Integer.parseInt(in);
+            isInt = true;
+        } catch (NumberFormatException e) {
+            
+        }
+        if(in.equals("exit")) {
+            //input.close();
             return false;
         }
-        else if(input.hasNextInt()) {
-            int value = input.nextInt();
-            if(value > 0 && value < 4) {
-                switch(value) {
+        else if(isInt) {
+            //int value = input.nextInt();
+            if(intValue > 0 && intValue < 4) {
+                switch(intValue) {
                     case 1:
                         int stop1, stop2;
                         System.out.println("Enter the first(starting) stop number:");
@@ -41,11 +53,12 @@ public class App {
                         findShortestPath(stop1, stop2, graph);     
                         break;
                     case 2:
-                        System.out.println("Enter the stop name, or just the first few characters:");
-                        busStopSearch(input.nextLine());    //input validation done within function
+                        System.out.print("Enter the stop name, or just the first few characters: \n- ");
+                        String searchTest = input.next();
+                        busStopSearch(searchTest.toUpperCase());    //input validation done within function
                         break;
                     case 3:
-                        System.out.println("Enter arrival time in format - hh:mm:ss");
+                        System.out.print("Enter arrival time in format - hh:mm:ss \n- ");
                         String inputTime = input.nextLine();
                         if(isValidTime(inputTime)) {    //check first if format is correct
                             tripArrivalTime(inputTime);
@@ -55,14 +68,24 @@ public class App {
                         break;
                     default:
                         System.out.println("Please enter a vaild input");
-                        input.close();
                         return false;
                 }
+            } else {
+                System.out.println("Please enter a vaild input");
             }
         }
         else {
             System.out.println("Please enter a vaild input");
         }
+        //input.close();
+        System.out.print("\nPress Enter to continue");
+        boolean runAgain = false;
+            
+            try {
+                System.in.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         return true;
     }
 
@@ -100,10 +123,10 @@ public class App {
         TST searchTree = new TST("translinkcaMapper/src/stopsDescs.txt");
         Iterable<String> validStops = searchTree.keysWithPrefix(stopName);
         if(validStops != null) {
-            System.out.println("|KEY|\t|STOP NUM|\t|STOP NAME|\t|STOP DESCRIPTION|");
+            System.out.println("|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
              System.out.println("--------------------------------------------------------------------------");
             for(String key : validStops){
-                System.out.println(key + "|\t" + searchTree.get(key).printStop());
+                System.out.println("" + searchTree.get(key).printStopSingleLine());
             }
         } else {
             System.out.println("No matching stops were found");

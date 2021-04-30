@@ -14,3 +14,4 @@
 `Finished Shortest path Algorithm for printing route from start to destination stop` - Dan Whelan 19335045 \
 `Fixed bug where App would run once and crash due to closed scanner` - Dan Whelan 19335045 \
 `busStopSearch implementation using TST` - Sean Gaffney 19304695 \
+`Menu bug fixes` - Sean Gaffney 19304695 \

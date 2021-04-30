@@ -61,4 +61,9 @@ public class Stop {
         output += "Stop Number:\n\t"+stopNumber+"\nStop Name:\n\t"+stopName+"\nStop Description:\n\t"+stopDescription+"";
         return output;
     }
+    public String printStopSingleLine() {
+        String output = "";
+        output += ""+stopName+"\t\t"+stopNumber+"\t"+stopDescription+"";
+        return output;
+    }
 }
