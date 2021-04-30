@@ -31,7 +31,7 @@ public class App {
                 switch(intValue) {
                     case 1:
                         int stop1, stop2;
-                        System.out.println("Enter the first(starting) stop number: \n-");
+                        System.out.print("Enter the first(starting) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop1 = input.nextInt();
                         }
@@ -39,7 +39,7 @@ public class App {
                             System.out.println("Please enter a vaild input");
                             break;
                         }
-                        System.out.println("Enter the second(destination) stop number: \n-");
+                        System.out.print("Enter the second(destination) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop2 = input.nextInt();
                         }
