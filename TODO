@@ -1,10 +1,10 @@
 Code Todos
 [x] Initialize repository
-[ ] Implement Graph Pathfinding functions
-[ ] Determine Graph building approach
-[ ] Implement stop search
-[ ] Build UI for user inputs
-[ ] Connect UI with backend algorithms
+[x] Implement Graph Pathfinding functions
+[x] Determine Graph building approach
+[x] Implement stop search
+[x] Build UI for user inputs
+[x] Connect UI with backend algorithms
 
 Admin Todos
 [ ] Write Design Doc
