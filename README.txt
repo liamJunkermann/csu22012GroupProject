@@ -16,7 +16,7 @@ Dan Whelan         19335045:
 Peadar Kenny       19334390:
     Design Docs
 Liam Junkermann    19300141:
-
+    TST for stop name completion and searching
 Sean Gaffney       19304695:   
     Readme.txt
     User interface
