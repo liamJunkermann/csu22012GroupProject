@@ -63,7 +63,7 @@ public class App {
                         if (isValidTime(inputTime)) { // check first if format is correct
                             tripArrivalTime(inputTime, graph);
                         } else {
-                            System.out.println("You must enter the time in the format  - hh:mm:ss");
+                            System.out.println("You must enter a valid time in the format  - hh:mm:ss");
                         }
                         break;
                     default:
@@ -120,7 +120,14 @@ public class App {
     // matching the search criteria (which can be zero, one or more stops)
     private static void busStopSearch(String stopName, TST searchTree) {
         Iterable<String> validStops = searchTree.keysWithPrefix(stopName);
-        if (validStops != null) {
+        boolean notEmpty = false;
+        for (String key : validStops) {
+            if(key != null) {
+                notEmpty = true;
+                break;
+            }
+        }
+        if (notEmpty) {
             System.out.println("\n|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
             System.out.println("--------------------------------------------------------------------------");
             for (String key : validStops) {
