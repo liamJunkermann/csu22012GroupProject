@@ -16,3 +16,5 @@
 `Fixed bug where App would run once and crash due to closed scanner` - Dan Whelan 19335045 \
 `busStopSearch implementation using TST` - Sean Gaffney 19304695 \
 `Menu bug fixes` - Sean Gaffney 19304695 \
+`Implemented Time search for bus routes` - Dan Whelan 19335045 \
+`Bug fixes + formatting` - Liam Junkermann 19300141
