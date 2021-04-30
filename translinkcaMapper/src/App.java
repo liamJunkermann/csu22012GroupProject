@@ -14,7 +14,6 @@ public class App {
         + "To find all trips with a given arrival time type:     3\n"
         +"- "
         );
-        //Scanner input = new Scanner(System.in);
         var in = input.next();
         boolean isInt = false;
         int intValue = 0;
@@ -25,16 +24,14 @@ public class App {
             
         }
         if(in.equals("exit")) {
-            //input.close();
             return false;
         }
         else if(isInt) {
-            //int value = input.nextInt();
             if(intValue > 0 && intValue < 4) {
                 switch(intValue) {
                     case 1:
                         int stop1, stop2;
-                        System.out.println("Enter the first(starting) stop number:");
+                        System.out.println("Enter the first(starting) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop1 = input.nextInt();
                         }
@@ -42,7 +39,7 @@ public class App {
                             System.out.println("Please enter a vaild input");
                             break;
                         }
-                        System.out.println("Enter the second(destination) stop number:");
+                        System.out.println("Enter the second(destination) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop2 = input.nextInt();
                         }
@@ -77,15 +74,12 @@ public class App {
         else {
             System.out.println("Please enter a vaild input");
         }
-        //input.close();
         System.out.print("\nPress Enter to continue");
-        boolean runAgain = false;
-            
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -145,5 +139,6 @@ public class App {
         do {
             run = menu(graph);
         } while(run);
+        System.out.println("\nSucessfully quit");
     }
 }
