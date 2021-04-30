@@ -96,8 +96,19 @@ public class App {
     //Searching for a bus stop by full name or by the first few characters in the name, using a
     //ternary search tree (TST), returning the full stop information for each stop matching the
     //search criteria (which can be zero, one or more stops)
-    private static String busStopSearch(String stopName) {
-        return "";
+    private static void busStopSearch(String stopName) {
+        TST searchTree = new TST("translinkcaMapper/src/stopsDescs.txt");
+        Iterable<String> validStops = searchTree.keysWithPrefix(stopName);
+        if(validStops != null) {
+            System.out.println("|KEY|\t|STOP NUM|\t|STOP NAME|\t|STOP DESCRIPTION|");
+             System.out.println("--------------------------------------------------------------------------");
+            for(String key : validStops){
+                System.out.println(key + "|\t" + searchTree.get(key).printStop());
+            }
+        } else {
+            System.out.println("No matching stops were found");
+        }
+        
     }
     // Searching for all trips with a given arrival time, returning full details of all trips matching the
     //criteria (zero, one or more), sorted by trip id
