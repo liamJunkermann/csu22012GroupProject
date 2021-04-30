@@ -31,7 +31,7 @@ public class App {
                 switch(intValue) {
                     case 1:
                         int stop1, stop2;
-                        System.out.print("Enter the first(starting) stop number: \n-");
+                        System.out.print("\nEnter the first(starting) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop1 = input.nextInt();
                         }
@@ -39,7 +39,7 @@ public class App {
                             System.out.println("That is not a valid stop");
                             break;
                         }
-                        System.out.print("Enter the second(destination) stop number: \n-");
+                        System.out.print("\nEnter the second(destination) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop2 = input.nextInt();
                         }
@@ -121,7 +121,7 @@ public class App {
     private static void busStopSearch(String stopName, TST searchTree) {
         Iterable<String> validStops = searchTree.keysWithPrefix(stopName);
         if(validStops != null) {
-            System.out.println("|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
+            System.out.println("\n|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
              System.out.println("--------------------------------------------------------------------------");
             for(String key : validStops){
                 searchTree.get(key).printStopSingleLine();
