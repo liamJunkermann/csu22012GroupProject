@@ -5,7 +5,6 @@ import java.util.regex.*;
 
 public class App {
     public static final Scanner input = new Scanner(System.in);
-
     //User interface menu - allows user to chose from avaible functions
     public static boolean menu(EdgeWeightedGraph graph){
         System.out.print("\nChoose from the options below or type 'exit' to quit the program:\n"
@@ -56,9 +55,9 @@ public class App {
                         break;
                     case 3:
                         System.out.print("Enter arrival time in format - hh:mm:ss \n- ");
-                        String inputTime = input.nextLine();
+                        String inputTime = input.next();
                         if(isValidTime(inputTime)) {    //check first if format is correct
-                            tripArrivalTime(inputTime);
+                            tripArrivalTime(inputTime, graph);
                         } else {
                             System.out.println("Please enter a vaild input");
                         }
@@ -85,7 +84,7 @@ public class App {
 
     //adapted from geeksforgeeks.org
     private static boolean isValidTime(String time) {
-        String regex = "([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]";
+        String regex = "(([0-9]:[0-5][0-9]:[0-5][0-9])|([2][0-3]:[0-5][0-9]:[0-5][0-9])|([0-1][0-9]:[0-5][0-9]:[0-5][0-9]))";
         Pattern p = Pattern.compile(regex);
         if (time == null) {
             return false;
@@ -134,8 +133,29 @@ public class App {
     }
     // Searching for all trips with a given arrival time, returning full details of all trips matching the
     //criteria (zero, one or more), sorted by trip id
-    private static String tripArrivalTime(String arrivalTime) {
-        return "";
+    private static void tripArrivalTime(String arrivalTime, EdgeWeightedGraph graph) {
+        ArrayList<Trip> validTrips = new ArrayList<Trip>();
+        for(int i = 0; i < graph.trips.size(); i++) {
+            String time = graph.trips.get(i).time;
+            if(time.charAt(0) == ' ') {
+                time = time.substring(1);
+            }
+            if(arrivalTime.charAt(0) == ' ') {
+                arrivalTime = arrivalTime.substring(1);
+            }
+            if(arrivalTime.equals(time)) {
+                validTrips.add(graph.trips.get(i));
+            }
+        }
+        for(int i = 0; i < validTrips.size(); i++) {
+            System.out.println("----------------------------------------------------------------------");
+            System.out.println(
+               "Trip ID:" + validTrips.get(i).id +"\n" +
+               "Stop Number:" + validTrips.get(i).stop.stopNumber +"\n" +
+               "Stop Name:" + validTrips.get(i).stop.stopName +"\n" +
+               "Arrival Time:" + validTrips.get(i).time +"\n"
+            );
+        }
     }
 
     public static void main(String[] args) throws Exception {

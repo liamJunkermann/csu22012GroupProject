@@ -10,6 +10,7 @@ public class EdgeWeightedGraph {
     public int numVert;
     public  static ArrayList<Stop> stops;
     public  static ArrayList<ArrayList<DirectedEdge>> adjEdges;
+    public static ArrayList<Trip> trips;
 
     public EdgeWeightedGraph() {
         stops = new ArrayList<>();
@@ -21,6 +22,7 @@ public class EdgeWeightedGraph {
         }
         initStopEdges();
         initTransferEdges();
+        initTripTimes();
     }
 
     private static void initStops() {
@@ -76,6 +78,30 @@ public class EdgeWeightedGraph {
             scanner.close();
         }
         catch(FileNotFoundException e){adjEdges = null;}
+    }
+
+    private static void initTripTimes() {
+        try {
+            trips = new ArrayList<>();
+            String route, time;
+            int stopNumber;
+            Stop stop;
+            String filename = "translinkcaMapper/src/stop_times.txt";
+            File file = new File(filename);
+            Scanner scanner = new Scanner(file);
+            scanner.useDelimiter(",");
+            scanner.nextLine();
+            while(scanner.hasNext()) {
+                route = scanner.next();
+                time = scanner.next();
+                scanner.next();
+                stopNumber = scanner.nextInt();
+                stop = stops.get(findStop(stopNumber));
+                trips.add(new Trip(time, stop, route));
+                scanner.nextLine();
+            }
+        }
+        catch (FileNotFoundException e) {}
     }
 
     private static void initTransferEdges() {
