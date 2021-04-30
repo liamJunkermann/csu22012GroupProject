@@ -6,11 +6,11 @@ import java.util.regex.*;
 public class App {
     public static final Scanner input = new Scanner(System.in);
     //User interface menu - allows user to chose from avaible functions
-    public static boolean menu(EdgeWeightedGraph graph){
+    public static boolean menu(EdgeWeightedGraph graph, TST tree){
         System.out.print("\nChoose from the options below or type 'exit' to quit the program:\n"
-        + "To find the shortest path between two bus stops type: 1\n"
-        + "To find information on a specific stop type:          2\n"
-        + "To find all trips with a given arrival time type:     3\n"
+        + "1 - To find the shortest path between two bus stops type\n"
+        + "2 - To find information on a specific stop type\n"
+        + "3 - To find all trips with a given arrival time type\n"
         +"- "
         );
         var in = input.next();
@@ -30,20 +30,20 @@ public class App {
                 switch(intValue) {
                     case 1:
                         int stop1, stop2;
-                        System.out.print("Enter the first(starting) stop number: \n-");
+                        System.out.print("\nEnter the first(starting) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop1 = input.nextInt();
                         }
                         else{
-                            System.out.println("Please enter a vaild input");
+                            System.out.println("That is not a valid stop");
                             break;
                         }
-                        System.out.print("Enter the second(destination) stop number: \n-");
+                        System.out.print("\nEnter the second(destination) stop number: \n-");
                         if(input.hasNextInt()) {
                             stop2 = input.nextInt();
                         }
                         else{
-                            System.out.println("Please enter a vaild input");
+                            System.out.println("That is not a valid stop");
                             break;
                         }
                         findShortestPath(stop1, stop2, graph);     
@@ -51,7 +51,7 @@ public class App {
                     case 2:
                         System.out.print("Enter the stop name, or just the first few characters: \n- ");
                         String searchTest = input.next();
-                        busStopSearch(searchTest.toUpperCase());    //input validation done within function
+                        busStopSearch(searchTest.toUpperCase(), tree);    //input validation done within function
                         break;
                     case 3:
                         System.out.print("Enter arrival time in format - hh:mm:ss \n- ");
@@ -59,19 +59,19 @@ public class App {
                         if(isValidTime(inputTime)) {    //check first if format is correct
                             tripArrivalTime(inputTime, graph);
                         } else {
-                            System.out.println("Please enter a vaild input");
+                            System.out.println("You must enter the time in the format  - hh:mm:ss");
                         }
                         break;
                     default:
-                        System.out.println("Please enter a vaild input");
+                        System.out.println("The menu options are between 1 - 3");
                         return false;
                 }
             } else {
-                System.out.println("Please enter a vaild input");
+                System.out.println("The menu options are between 1 - 3");
             }
         }
         else {
-            System.out.println("Please enter a vaild input");
+            System.out.println("Please enter a value between 1 and 3 - or 'exit");
         }
         System.out.print("\nPress Enter to continue");
         try {
@@ -117,14 +117,13 @@ public class App {
     //Searching for a bus stop by full name or by the first few characters in the name, using a
     //ternary search tree (TST), returning the full stop information for each stop matching the
     //search criteria (which can be zero, one or more stops)
-    private static void busStopSearch(String stopName) {
-        TST searchTree = new TST("translinkcaMapper/src/stopsDescs.txt");
+    private static void busStopSearch(String stopName, TST searchTree) {
         Iterable<String> validStops = searchTree.keysWithPrefix(stopName);
         if(validStops != null) {
-            System.out.println("|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
+            System.out.println("\n|NAME|\t\t\t\t\t|NUM|\t|STOP DESCRIPTION|");
              System.out.println("--------------------------------------------------------------------------");
             for(String key : validStops){
-                System.out.println("" + searchTree.get(key).printStopSingleLine());
+                searchTree.get(key).printStopSingleLine();
             }
         } else {
             System.out.println("No matching stops were found");
@@ -160,9 +159,10 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         EdgeWeightedGraph graph = new EdgeWeightedGraph();
+        TST newTree = new TST("translinkcaMapper/src/stopsDescs.txt");
         boolean run = false;
         do {
-            run = menu(graph);
+            run = menu(graph, newTree);
         } while(run);
         System.out.println("\nSucessfully quit");
     }
