@@ -96,8 +96,7 @@ public class App {
     }
 
     // Finding shortest paths between 2 bus stops (as input by the user), returning
-    // the list of stops
-    // en route as well as the associated “cost”.
+    // the list of stops en route as well as the associated “cost”.
     private static void findShortestPath(int stop1, int stop2, EdgeWeightedGraph graph) {
         DijkstraSPT shortestPath = new DijkstraSPT(graph, stop1, stop2);
         if (shortestPath.fail == false && stop1 != stop2) {
@@ -117,10 +116,8 @@ public class App {
     }
 
     // Searching for a bus stop by full name or by the first few characters in the
-    // name, using a
-    // ternary search tree (TST), returning the full stop information for each stop
-    // matching the
-    // search criteria (which can be zero, one or more stops)
+    // name, using ternary search tree (TST), returning the full stop information for each stop
+    // matching the search criteria (which can be zero, one or more stops)
     private static void busStopSearch(String stopName, TST searchTree) {
         Iterable<String> validStops = searchTree.keysWithPrefix(stopName);
         if (validStops != null) {
@@ -136,8 +133,7 @@ public class App {
     }
 
     // Searching for all trips with a given arrival time, returning full details of
-    // all trips matching the
-    // criteria (zero, one or more), sorted by trip id
+    // all trips matching the criteria (zero, one or more), sorted by trip id
     private static void tripArrivalTime(String arrivalTime, EdgeWeightedGraph graph) {
         ArrayList<Trip> validTrips = new ArrayList<Trip>();
         for (int i = 0; i < graph.trips.size(); i++) {
