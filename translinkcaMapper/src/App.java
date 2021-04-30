@@ -49,12 +49,12 @@ public class App {
                         findShortestPath(stop1, stop2, graph);     
                         break;
                     case 2:
-                        System.out.print("Enter the stop name, or just the first few characters: \n- ");
+                        System.out.print("\nEnter the stop name, or just the first few characters: \n- ");
                         String searchTest = input.next();
                         busStopSearch(searchTest.toUpperCase(), tree);    //input validation done within function
                         break;
                     case 3:
-                        System.out.print("Enter arrival time in format - hh:mm:ss \n- ");
+                        System.out.print("\nEnter arrival time in format - hh:mm:ss \n- ");
                         String inputTime = input.next();
                         if(isValidTime(inputTime)) {    //check first if format is correct
                             tripArrivalTime(inputTime, graph);
@@ -82,7 +82,6 @@ public class App {
         return true;
     }
 
-    //adapted from geeksforgeeks.org
     private static boolean isValidTime(String time) {
         String regex = "(([0-9]:[0-5][0-9]:[0-5][0-9])|([2][0-3]:[0-5][0-9]:[0-5][0-9])|([0-1][0-9]:[0-5][0-9]:[0-5][0-9]))";
         Pattern p = Pattern.compile(regex);
@@ -158,8 +157,17 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
+        System.out.println("\nLoading...");
+        long start = System.nanoTime();
+
         EdgeWeightedGraph graph = new EdgeWeightedGraph();
         TST newTree = new TST("translinkcaMapper/src/stopsDescs.txt");
+
+        long end = System.nanoTime();
+        long elapsedTime = end - start; 
+        double elapsedTimeInSecond = (double) elapsedTime / 1_000_000_000;
+        System.out.println("Loaded in time " + elapsedTimeInSecond);
+
         boolean run = false;
         do {
             run = menu(graph, newTree);
