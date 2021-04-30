@@ -81,13 +81,18 @@ public class App {
     //en route as well as the associated “cost”.
     private static void findShortestPath(int stop1, int stop2, EdgeWeightedGraph graph) {
         DijkstraSPT shortestPath = new DijkstraSPT(graph, stop1, stop2);
-        if(shortestPath.fail == false) {
+        if(shortestPath.fail == false && stop1 != stop2) {
             ArrayList<Stop> route = shortestPath.shortestRoute;
             System.out.println("The Route from stop " + stop1 + " to stop " + stop2 + " is:");
             for(int i = 0; i < route.size(); i++) {
                 Stop s = route.get(i);
                 System.out.println(s.stopNumber + " - " + s.stopName);
             }
+        }
+        else if(stop1 == stop2) {
+            System.out.println("The Route from stop " + stop1 + " to stop " + stop2 + " is:");
+            System.out.println(EdgeWeightedGraph.stops.get(EdgeWeightedGraph.findStop(stop1)).stopNumber + " - " + 
+                               EdgeWeightedGraph.stops.get(EdgeWeightedGraph.findStop(stop1)).stopName);
         }
         else {
             System.out.println("Invalid Start or Destination Stop number entered");

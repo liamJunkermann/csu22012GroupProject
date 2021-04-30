@@ -5,22 +5,22 @@ public class Stop {
     
     public Stop(int stopNumber, String stopName) {
         this.stopNumber = stopNumber;
-        if(stopName.charAt(0) == 'W') {
+        if(stopName.charAt(0) == 'W' && stopName.charAt(1) == 'e') {
             String sub = stopName.substring(9);
             sub += " WB";
             this.stopName = sub;
         }
-        else if(stopName.charAt(0) == 'E'){
+        else if(stopName.charAt(0) == 'E' && stopName.charAt(1) == 'a'){
             String sub = stopName.substring(9);
             sub += " EB";
             this.stopName = sub;
         }
-        else if(stopName.charAt(0) == 'N') {
+        else if(stopName.charAt(0) == 'N' && stopName.charAt(1) == 'o') {
             String sub = stopName.substring(10);
             sub += " NB";
             this.stopName = sub;
         }
-        else if(stopName.charAt(0) == 'S') {
+        else if(stopName.charAt(0) == 'S' && stopName.charAt(1) == 'o') {
             String sub = stopName.substring(10);
             sub += " SB";
             this.stopName = sub;
